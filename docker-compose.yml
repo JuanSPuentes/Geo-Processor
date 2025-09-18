@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  fastapi:
+    build: ./fastapi
+    container_name: fastapi
+    ports:
+      - "8000:8000"
+    networks: [gpnet]
+
+  nest:
+    build: ./nest
+    container_name: nest
+    environment:
+      - PYTHON_SERVICE_URL=http://fastapi:8000
+      - NODE_ENV=production
+    depends_on:
+      - fastapi
+    ports:
+      - "3001:3001"
+    networks: [gpnet]
+
+  next:
+    build: ./next
+    container_name: next
+    environment:
+      - NEST_URL=http://nest:3001
+      - NODE_ENV=production
+    depends_on:
+      - nest
+    ports:
+      - "3000:3000"
+    networks: [gpnet]
+
+networks:
+  gpnet: {}
