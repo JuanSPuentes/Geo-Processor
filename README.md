@@ -103,19 +103,14 @@ cd nest
 npm install
 # Development with hot reload
 npm run start:dev
-# Production
-npm run start
 ```
 
-## NestJS service
+## NextJs service
 ```bash
 cd next
 npm install
 # Development
 npm run dev
-# Production
-npm run build
-npm run start
 ```
 
 # API Usage
