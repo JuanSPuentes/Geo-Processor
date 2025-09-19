@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, confloat
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, confloat, conlist
 from typing import List
 
 class Point(BaseModel):
@@ -7,7 +9,7 @@ class Point(BaseModel):
     lng: confloat(ge=-180, le=180)
 
 class PointsRequest(BaseModel):
-    points: List[Point]
+    points: conlist(Point, min_length=1)
 
 class Bounds(BaseModel):
     north: float
@@ -21,11 +23,18 @@ class ProcessResponse(BaseModel):
 
 app = FastAPI(title="Geo Processor", version="1.0.0")
 
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=400,
+        content={
+            "error": "The body must have 'points' as a non-empty array of objects with valid numeric 'lat' and 'lng'.",
+            "details": exc.errors(),
+        },
+    )
+
 @app.post("/process", response_model=ProcessResponse)
 def process_points(req: PointsRequest):
-    if not req.points:
-        raise HTTPException(status_code=400, detail="`points` no puede estar vacío")
-
     lats = [p.lat for p in req.points]
     lngs = [p.lng for p in req.points]
 
