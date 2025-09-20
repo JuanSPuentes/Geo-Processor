@@ -1,4 +1,3 @@
-# Puts the project root on sys.path so tests can import `app`
 import os
 import sys
 

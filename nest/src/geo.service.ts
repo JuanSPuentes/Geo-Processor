@@ -12,7 +12,7 @@ export class GeoService {
             const res = await firstValueFrom(this.http.post(`${url}/process`, dto));
             return res.data;
         } catch (e: any) {
-            const msg = e?.response?.data?.detail || e?.response?.data?.message || 'Error en servicio Python';
+            const msg = e?.response?.data?.detail || e?.response?.data?.message || 'Error Python';
             throw new BadRequestException(msg);
         }
     }

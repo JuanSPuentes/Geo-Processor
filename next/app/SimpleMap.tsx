@@ -4,7 +4,6 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Rectangle } from 'react-leaflet';
 import type { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
-// Fix de íconos (importa las imágenes para que Next las empaquete)
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
